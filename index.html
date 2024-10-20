@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="inventory">
+        <div class="header">
+            <h1>Inventario</h1>
+            <button id="clearInventory">Borrar todo</button>
+        </div>
+        <button id="addSection">Agregar Sección</button>
+        <div id="sections"></div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres borrar todo el inventario?</p>
+            <button id="confirmYes">Sí</button>
+            <button id="confirmNo">No</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
