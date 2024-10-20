@@ -54,19 +54,26 @@ function uploadImage(element, uniqueId) {
     input.accept = 'image/*';
     input.onchange = e => {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.onclick = () => changeImage(input);
-            element.innerHTML = '';
-            element.appendChild(img);
-            
-            // Guardar la imagen en localStorage
-            localStorage.setItem(uniqueId + '-image', event.target.result);
-            saveInventory(); // Guardar el inventario después de cargar la imagen
-        };
-        reader.readAsDataURL(file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.onclick = () => changeImage(input);
+                element.innerHTML = '';
+                element.appendChild(img);
+                
+                // Guardar la imagen en localStorage solo si hay suficiente espacio
+                try {
+                    localStorage.setItem(uniqueId + '-image', event.target.result);
+                    saveInventory(); // Guardar el inventario después de cargar la imagen
+                } catch (e) {
+                    console.error('Error al guardar la imagen en localStorage: ', e);
+                    alert('No hay suficiente espacio en localStorage para guardar esta imagen.');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
     };
     input.click();
 }
@@ -145,17 +152,18 @@ function loadInventory() {
         });
 
         // Cargar imágenes guardadas
-        const boxes = document.querySelectorAll('.box');
-        boxes.forEach(box => {
-            const uniqueId = box.querySelector('input').id.split('-')[0]; // Obtener el ID único
-            const savedImage = localStorage.getItem(uniqueId + '-image');
-            if (savedImage) {
-                const img = document.createElement('img');
-                img.src = savedImage;
-                box.querySelector('.add-image').innerHTML = ''; // Limpiar el contenido anterior
-                box.querySelector('.add-image').appendChild(img); // Agregar la imagen guardada
-            }
-        });
+        // Cargar imágenes guardadas
+    const boxes = document.querySelectorAll('.box');
+boxes.forEach(box => {
+    const uniqueId = box.querySelector('input').id.split('-')[0]; // Obtener el ID único
+    const savedImage = localStorage.getItem(uniqueId + '-image');
+    if (savedImage) {
+        const img = document.createElement('img');
+        img.src = savedImage;
+        box.querySelector('.add-image').innerHTML = ''; // Limpiar el contenido anterior
+        box.querySelector('.add-image').appendChild(img); // Agregar la imagen guardada
+    }
+});
 
         // Cargar títulos guardados en cada sección
         const titles = document.querySelectorAll('.section-title input');
