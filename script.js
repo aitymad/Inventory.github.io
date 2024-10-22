@@ -120,12 +120,12 @@ function createNewArticle() {
         <div class="title">
             <div class="title_edit">COMIDAS</div>
             <button class="delete">
-                <img src="SVG/trash.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+                <img src="trash.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
             </button>
         </div>
         <div class="sections">
             <button class="add_section">
-                <img src="SVG/plus.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+                <img src="plus.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
             </button>
         </div>
     `;
