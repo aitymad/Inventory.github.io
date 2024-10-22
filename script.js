@@ -1,214 +1,153 @@
-document.getElementById('addSection').addEventListener('click', addSection);
+// Selecciona todos los botones de añadir secciones
+document.querySelectorAll('.add_section').forEach(button => {
+    button.addEventListener('click', openModal);
+});
+
+// Funciones de modal y agregar sección
+document.querySelector('.close').addEventListener('click', closeModal);
+document.querySelector('.submit_section').addEventListener('click', addSection);
+
+const sectionsContainers = document.querySelectorAll('.sections');
+const modal = document.querySelector('.modal');
+const editSection = document.querySelector('.edit_section');
+
+let selectedSection = null; // Para almacenar la sección seleccionada
+let currentContainer = null; // Para almacenar el contenedor actual
+
+function openModal() {
+    currentContainer = this.closest('.sections'); // Guardar el contenedor actual
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
 
 function addSection() {
-    const section = document.createElement('div');
+    const imageInput = document.querySelector('.image_input');
+    const textInput = document.querySelector('.text_input');
+    const section = document.createElement('section');
     section.className = 'section';
-    const sectionId = `section-${Date.now()}`; // Generar un ID único para cada sección
-    section.innerHTML = `
-        <h2 class="section-title">
-            <input type="text" placeholder="Nombre de la sección" id="${sectionId}" onblur="saveSectionTitle('${sectionId}')" />
-            <span class="edit-icon" onclick="editSectionTitle(this, '${sectionId}')">✏️</span>
-            <span class="delete-icon" onclick="deleteSection(this)">🗑️</span>
-        </h2>
-        <button class="addBox">Agregar Casilla</button>
-        <div class="boxes"></div>
-    `;
-    document.getElementById('sections').appendChild(section);
-    
-    // Añadir el evento para el botón de agregar casilla
-    section.querySelector('.addBox').addEventListener('click', () => addBox(section.querySelector('.boxes')));
 
-    // Guardar el título de la nueva sección automáticamente
-    const titleInput = section.querySelector('input');
-    titleInput.addEventListener('blur', () => saveSectionTitle(sectionId));
-}
+    const file = imageInput.files[0];
+    const text = textInput.value;
 
-function saveSectionTitle(sectionId) {
-    const titleInput = document.getElementById(sectionId);
-    const titleValue = titleInput.value;
-    localStorage.setItem(sectionId, titleValue); // Guardar título en localStorage
-}
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        section.innerHTML = 
+        `<button class="carpet">
+            <img src="${e.target.result}" alt="Button Image">
+            <div class="text">${text}</div>
+        </button>`;
 
-function addBox(boxContainer) {
-    const box = document.createElement('div');
-    box.className = 'box';
-    
-    const uniqueId = 'box-' + Date.now(); // Generar un ID único para cada casilla
-    box.innerHTML = `
-        <div class="add-image" onclick="uploadImage(this, '${uniqueId}')">
-            <span>+</span>
-        </div>
-        <div class="edit-text">
-            <input type="text" placeholder="Texto..." id="${uniqueId}-text" disabled>
-            <span class="edit-icon" onclick="editText(this, '${uniqueId}-text')">✏️</span>
-            <span class="delete-icon" onclick="deleteBox(this)">🗑️</span>
-        </div>
-    `;
-    boxContainer.appendChild(box);
-    saveInventory(); // Guardar el inventario al añadir una nueva casilla
-}
-
-function uploadImage(element, uniqueId) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = e => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const img = document.createElement('img');
-                img.src = event.target.result;
-                img.onclick = () => changeImage(input);
-                element.innerHTML = '';
-                element.appendChild(img);
-                
-                // Guardar la imagen en localStorage solo si hay suficiente espacio
-                try {
-                    localStorage.setItem(uniqueId + '-image', event.target.result);
-                    saveInventory(); // Guardar el inventario después de cargar la imagen
-                } catch (e) {
-                    console.error('Error al guardar la imagen en localStorage: ', e);
-                    alert('No hay suficiente espacio en localStorage para guardar esta imagen.');
-                }
-            };
-            reader.readAsDataURL(file);
+        // Insert the new section into the correct container
+        if (currentContainer) {
+            currentContainer.insertBefore(section, currentContainer.querySelector('.add_section'));
         }
+
+        closeModal();
+
+        // Clear the modal input fields
+        imageInput.value = '';
+        textInput.value = '';
+        
+        // Set up listeners for the new section
+        setupSectionListeners(section);
     };
-    input.click();
-}
 
-function changeImage(input) {
-    input.value = '';
-    uploadImage(input.parentElement, input.parentElement.parentElement.querySelector('input').id);
-}
-
-function editText(icon, uniqueId) {
-    const input = document.getElementById(uniqueId);
-    input.disabled = !input.disabled; // Alternar el estado habilitado/deshabilitado
-    if (!input.disabled) {
-        input.focus(); // Hacer foco en el input para editar
+    if (file) {
+        reader.readAsDataURL(file);
     } else {
-        // Guardar el texto en local storage usando un ID único
-        const textValue = input.value;
-        localStorage.setItem(uniqueId, textValue); // Guardar texto en localStorage usando el ID único
-        saveInventory(); // Guardar el inventario después de editar
+        alert("Por favor, selecciona una imagen.");
     }
 }
 
-function deleteBox(icon) {
-    const box = icon.closest('.box');
-    box.remove();
-    saveInventory(); // Guardar el inventario al eliminar una casilla
-}
-
-function deleteSection(icon) {
-    const section = icon.closest('.section');
-    section.remove();
-    saveInventory(); // Guardar el inventario al eliminar una sección
-}
-
-function editSectionTitle(icon, sectionId) {
-    const titleInput = document.getElementById(sectionId);
-    titleInput.disabled = !titleInput.disabled; // Alternar el estado habilitado/deshabilitado
-    if (!titleInput.disabled) {
-        titleInput.focus(); // Hacer foco en el input para editar
-    } else {
-        saveSectionTitle(sectionId); // Guardar el título en localStorage
-    }
-}
-
-function saveInventory() {
-    const sections = document.getElementById('sections').innerHTML;
-    localStorage.setItem('inventory', sections);
-}
-
-function loadInventory() {
-    const savedSections = localStorage.getItem('inventory');
-    if (savedSections) {
-        document.getElementById('sections').innerHTML = savedSections;
-        const addBoxButtons = document.querySelectorAll('.addBox');
-        addBoxButtons.forEach(button => {
-            button.addEventListener('click', () => addBox(button.nextElementSibling));
-        });
-
-        // Habilitar el evento de edición de texto para cada icono de lápiz
-        const editIcons = document.querySelectorAll('.edit-icon');
-        editIcons.forEach(icon => {
-            const uniqueId = icon.previousElementSibling.id; // Obtener el ID único
-            icon.onclick = function() {
-                editText(this, uniqueId);
-            };
-        });
-
-        // Cargar texto guardado en cada casilla
-        const inputs = document.querySelectorAll('.edit-text input');
-        inputs.forEach(input => {
-            const savedText = localStorage.getItem(input.id); // Obtener texto usando el ID único
-            if (savedText) {
-                input.value = savedText; // Restaurar el texto guardado
-                input.disabled = true; // Asegurarse de que el input esté deshabilitado al cargar
+// Función para añadir los event listeners a los elementos necesarios
+function setupSectionListeners(section) {
+    section.addEventListener('click', function(event) {
+        if (event.target.closest('button')) {
+            if (selectedSection) {
+                selectedSection.classList.remove('selected');
             }
-        });
+            selectedSection = event.target.closest('section');
+            selectedSection.classList.add('selected');
+        }
+    });
+}
 
-        // Cargar imágenes guardadas
-        // Cargar imágenes guardadas
-    const boxes = document.querySelectorAll('.box');
-boxes.forEach(box => {
-    const uniqueId = box.querySelector('input').id.split('-')[0]; // Obtener el ID único
-    const savedImage = localStorage.getItem(uniqueId + '-image');
-    if (savedImage) {
-        const img = document.createElement('img');
-        img.src = savedImage;
-        box.querySelector('.add-image').innerHTML = ''; // Limpiar el contenido anterior
-        box.querySelector('.add-image').appendChild(img); // Agregar la imagen guardada
+// Selección y eliminación de secciones
+sectionsContainers.forEach(container => {
+    setupSectionListeners(container); // Configurar listeners para secciones existentes
+});
+
+// Eliminar sección seleccionada
+document.querySelector('.eliminate').addEventListener('click', function() {
+    if (selectedSection) {
+        selectedSection.remove();
+        selectedSection = null;
+    } else {
+        alert("Por favor, selecciona una sección para eliminar.");
     }
 });
 
-        // Cargar títulos guardados en cada sección
-        const titles = document.querySelectorAll('.section-title input');
-        titles.forEach(titleInput => {
-            const titleId = titleInput.id;
-            const savedTitle = localStorage.getItem(titleId); // Obtener título usando el ID
-            if (savedTitle) {
-                titleInput.value = savedTitle; // Restaurar el título guardado
-            }
-        });
-    }
-}
 
-// Guardar el texto cuando se modifica
-document.addEventListener('input', function(e) {
-    if (e.target.tagName === 'INPUT' && e.target.placeholder === "Texto...") {
-        const inputId = e.target.id; // Usar el ID único del input
-        localStorage.setItem(inputId, e.target.value); // Guardar texto en localStorage usando el ID único
-    } else if (e.target.tagName === 'INPUT' && e.target.placeholder === "Nombre de la sección") {
-        const sectionId = e.target.id; // Usar el ID de la sección
-        localStorage.setItem(sectionId, e.target.value); // Guardar título de sección
-    }
+
+
+// Funcionalidad de edición de título
+const titleEdits = document.querySelectorAll('.title_edit');
+titleEdits.forEach(titleEdit => {
+    addTitleEditingFunctionality(titleEdit);
 });
 
-loadInventory();
+function addTitleEditingFunctionality(titleEdit) {
+    titleEdit.addEventListener('click', function() {
+        titleEdit.contentEditable = true;
+        titleEdit.focus();
+    });
 
-document.getElementById('addSection').addEventListener('click', addSection);
-document.getElementById('clearInventory').addEventListener('click', showConfirmationModal);
-document.getElementById('confirmYes').addEventListener('click', clearInventory);
-document.getElementById('confirmNo').addEventListener('click', closeConfirmationModal);
-
-function showConfirmationModal() {
-    const modal = document.getElementById('confirmationModal');
-    modal.style.display = 'flex'; // Mostrar el modal
+    titleEdit.addEventListener('blur', function() {
+        titleEdit.contentEditable = false;
+    });
 }
 
-function closeConfirmationModal() {
-    const modal = document.getElementById('confirmationModal');
-    modal.style.display = 'none'; // Ocultar el modal
+// Crear un nuevo artículo
+document.querySelector('.plus').addEventListener('click', createNewArticle);
+
+function createNewArticle() {
+    // Clonar el artículo existente
+    const newArticle = document.createElement('article');
+    newArticle.innerHTML = `
+        <div class="title">
+            <div class="title_edit">COMIDAS</div>
+            <button class="delete">
+                <img src="SVG/trash.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+            </button>
+        </div>
+        <div class="sections">
+            <button class="add_section">
+                <img src="SVG/plus.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+            </button>
+        </div>
+    `;
+    
+    // Añadir el nuevo artículo al final del body
+    document.body.appendChild(newArticle);
+    
+    // Asignar event listener al botón "add_section" en el nuevo artículo
+    newArticle.querySelector('.add_section').addEventListener('click', openModal);
+    
+    // Asignar event listener al botón de eliminar en el nuevo artículo
+    newArticle.querySelector('.delete').addEventListener('click', function() {
+        newArticle.remove(); // Elimina el artículo completo
+    });
+
+    // Llama a la función de configuración de listeners para el nuevo artículo
+    setupSectionListeners(newArticle.querySelector('.sections'));
 }
 
-function clearInventory() {
-    localStorage.clear(); // Limpiar todo el localStorage
-    document.getElementById('sections').innerHTML = ''; // Limpiar las secciones en la página
-    closeConfirmationModal(); // Cerrar el modal después de borrar el inventario
-}
-
-// El resto del código permanece igual...
+// Seleccionar todos los artículos existentes y añadir el event listener a los botones de eliminar
+document.querySelectorAll('article').forEach(article => {
+    article.querySelector('.delete').addEventListener('click', function() {
+        article.remove(); // Elimina el artículo completo
+    });
+});
