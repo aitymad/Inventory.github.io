@@ -1,138 +1,262 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+@font-face {
+    font-family: 'Lemon';
+    src: url('Lemon_Days.ttf') format('truetype'); /* Ruta al archivo TTF */
+    font-weight: normal; /* Peso de la fuente (puedes ajustarlo según sea necesario) */
+    font-style: normal;  /* Estilo de la fuente */
+}
+@font-face {
+    font-family: 'Candy';
+    src: url('Candy.otf') format('Opentype'); /* Ruta al archivo TTF */
+    font-weight: normal; /* Peso de la fuente (puedes ajustarlo según sea necesario) */
+    font-style: normal;  /* Estilo de la fuente */
 }
 
-#inventory {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+body {
+    background-color: #F4E9E9;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*|||||||||| HEADER ||||||||||*/
+
+header {
+    display: flex;
+    background-color: #d6aca3;
+    justify-content: space-between;
+    padding:  4vw;
+    align-items: center;
 }
 
 h1 {
+    margin: 0;
+    padding: 2vw;
+    padding-left: 7vw;
+    padding-right: 7vw;
+    font-family: 'Lemon';
+    letter-spacing: 0.2vw;
+    color: #494140;
+    background-color: #FFDEDC;
+    font-size: 6vw;
+    
+    align-content: center;
+    border-radius: 5vw;
+}
+
+#options {
+    align-content: center;
+}
+
+.form {
+    width: 10vw; /* Ancho del botón */
+    height: 10vw; /* Alto del botón */
+    border: none; /* Sin borde */
+    border-radius: 50%; /* Hace que el botón sea un círculo */
+    background-color: #FFDEDC; /* Color de fondo plano (rojo en este caso) */
+    display: flex; /* Para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 0; /* Sin relleno para que no haya espacio extra */
+}
+
+.icon {
+    width: 5vw; /* Ancho del botón */
+    height: 5vw; /* Alto del botón */
+}
+
+/*|||||||||| HEADER ||||||||||*/
+
+/*|||||||||| SECTIONS ||||||||||*/
+
+
+.title {
+    display: flex;
+    margin: auto;
+    margin-top: 5vw;
+    background-color: #494140;
+    height: 11vw;
+    width: 92vw;
+    border-top-left-radius: 8vw;
+    border-top-right-radius: 8vw;
+    
+    align-content: center;
+}
+
+.title_edit{
+    background-color: #FFDEDC;
+    font-family: 'Candy';
     text-align: center;
+    width: 30vw;
+    height: 8vw;
+    font-size: 4vw;
+    margin-left: 6vw;
+    margin-top: 1.5vw;
+    align-content: center;
+    color: #494140;
+    border-radius: 10vw;
+}
+
+.delete {
+    width: 8vw; /* Ancho del botón */
+    height: 8vw; /* Alto del botón */
+    border: none; /* Sin borde */
+    border-radius: 50%; /* Hace que el botón sea un círculo */
+    background-color: #FFDEDC; /* Color de fondo plano (rojo en este caso) */
+    display: flex; /* Para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 0; /* Sin relleno para que no haya espacio extra */
+    margin-left: 42vw;
+    margin-top: 1.5vw;
+}
+
+.sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    margin: auto;
+    margin-bottom: 5vw;
+    padding:1%;
+    background-color: #7A6B6A;
+    gap: 0vw;
+    width: 90vw;
+    border-bottom-left-radius: 3vw;
+    border-bottom-right-radius: 3vw;
 }
 
 .section {
-    margin: 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
+    padding: 2vw; /* Ajustar padding si es necesario */
+    margin: 0; /* Ajustar margen si es necesario */
 }
 
-.boxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Espacio entre las casillas */
+.carpet {
+    width: 20vw; /* Ancho del botón */
+    height: 20vw; /* Alto del botón */
+    background-color: #FFDEDC; /* Color de fondo del botón */
+    border: none; /* Sin borde */
+    border-radius:2vw; /* Bordes ligeramente redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }
 
-.box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 100px;
+.carpet img {
+    padding: auto;
+    width: 15vw; 
+    height: 10vw;
+    border: #494140 solid 0.5vw;
+    border-radius: 1vw;
+    background-color: #494140;
+    object-fit:contain;
 }
 
-.add-image {
-    width: 100px;
-    height: 100px;
-    background-color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-}
-
-.box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.edit-text {
-    display: flex;
-    align-items: center;
-    margin-top: 5px; /* Espacio entre la imagen y el texto */
-    width: 100%; /* Hacer que ocupe el mismo ancho que la imagen */
-}
-
-.edit-text input {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    margin-right: 5px;
-    width: 100%; /* Ajustar ancho del input para que no sobresalga */
-    max-width: 60px; /* Limitar el ancho máximo del input */
-}
-
-.edit-text .edit-icon,
-.edit-text .delete-icon {
-    cursor: pointer;
-    margin-left: 5px; /* Espacio entre los íconos */
-    max-width: 20px; /* Limitar el ancho de los íconos */
-    flex-shrink: 0; /* Evitar que los íconos se reduzcan */
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-}
-
-#inventory {
-    width: 80%;
+.text {
+    align-content: center;
     margin: auto;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 1vw;
+    padding: 1vw;
+    height: 2vw;
+    width: 15vw;
+    background-color: #514343;
+    border-radius: 3vw;
+    color: #fefefe;
+    font-family: 'Candy';
+    letter-spacing: 0.2vw;
+    font-size: 1.5vw;
 }
 
-h1 {
-    text-align: center;
-    display: inline-block;
+.add_section {
+    width: 20vw; /* Ancho del botón */
+    height: 20vw; /* Alto del botón */
+    margin: 2vw;
+    background-color: #FFDEDC; /* Color de fondo del botón */
+    border: none; /* Sin borde */
+    border-radius:2vw; /* Bordes ligeramente redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }
+/*|||||||||| SECTIONS ||||||||||*/
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    cursor: pointer;
-}
-
+/* Modal styles */
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    display: none; 
     justify-content: center;
-    align-items: center;
+    align-content: center;
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); 
 }
 
 .modal-content {
-    background-color: white;
+    display: flex;
+    flex-direction: column;
+    background-color: #7A6B6A;
+    margin: 15% auto; 
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 80%; 
+    border-radius: 3vw;
+    gap: 2vw;
+}
+
+
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.selected {
+    border: 1px solid rgb(88, 76, 76); /* Cambia el estilo según prefieras */
+}
+
+.edit_section {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.file_input_label {
+    font-family: 'Candy';
     text-align: center;
+    background-color: #FFDEDC;
+    padding: 2vw;
+    border-radius: 5vw;
+    color: #494140;
 }
 
-.modal-content p {
-    margin-bottom: 20px;
+.text_input {
+    font-family: 'Candy';
+    text-align: center;
+    background-color: #FFDEDC;
+    padding: 2vw;
+    border-radius: 5vw;
+    color: #494140;
+    border: 0;
 }
 
-.modal-content button {
-    margin: 0 10px;
-    padding: 10px 20px;
+.add_section_options{
+    margin-top: 2vw;
+    display: flex; 
+    justify-content: space-between;
+}
+
+.submit_section,
+.close{
+   background-color: rgba(255, 0, 0, 0);
+   border: #49414000 solid;
 }
