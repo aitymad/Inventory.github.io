@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventarios</title>
+    <title>MyITEM</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="inventory">
-        <div class="header">
-            <h1>Inventario</h1>
-            <button id="clearInventory">Borrar todo</button>
+    <header>
+        <button class="form">
+            <img src="SVG/options.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+        </button>
+        <button class="edit form">    
+            <img src="SVG/edit.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+        </button>
+        <button class="plus form">
+            <img src="SVG/plus.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+        </button>
+        <h1>MyITEM</h1>
+        <button class="eliminate form">
+            <img src="SVG/trash.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+        </button>
+    </header>
+
+    
+    <article>
+        <div class="title">
+            <div class="title_edit">
+                COMIDAS
+            </div>
+            <button class="delete">
+                <img src="SVG/trash.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+            </button>
         </div>
-        <button id="addSection">Agregar Sección</button>
-        <div id="sections"></div>
+        <div class="sections">
+            <button class="add_section">
+                <img src="SVG/plus.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+            </button>
+        </div>
+    </article>
+    
+    
+    <div class="modal">
+        <div class="modal-content">
+            <label class="file_input_label">
+                Añadir una imagen
+                <input type="file" class="image_input" accept="image/*" style="display: none;">
+            </label>
+            <input type="text" class="text_input" placeholder="Escribe aquí">
+            <div class="add_section_options">
+                <button class="submit_section">
+                    <img src="SVG/check.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+                </button>
+                <button class="close">
+                    <img src="SVG/close.svg" class="icon" alt="Cuadrado Rojo" width="24" height="24">
+                </button>
+            </div>
     </div>
 
-    <!-- Modal de confirmación -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-            <p>¿Estás seguro de que quieres borrar todo el inventario?</p>
-            <button id="confirmYes">Sí</button>
-            <button id="confirmNo">No</button>
-        </div>
-    </div>
+    
 
     <script src="script.js"></script>
 </body>
