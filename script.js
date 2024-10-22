@@ -9,8 +9,6 @@ document.querySelector('.submit_section').addEventListener('click', addSection);
 
 const sectionsContainers = document.querySelectorAll('.sections');
 const modal = document.querySelector('.modal');
-const editSection = document.querySelector('.edit_section');
-
 let selectedSection = null; // Para almacenar la sección seleccionada
 let currentContainer = null; // Para almacenar el contenedor actual
 
@@ -90,9 +88,6 @@ document.querySelector('.eliminate').addEventListener('click', function() {
     }
 });
 
-
-
-
 // Funcionalidad de edición de título
 const titleEdits = document.querySelectorAll('.title_edit');
 titleEdits.forEach(titleEdit => {
@@ -143,6 +138,9 @@ function createNewArticle() {
 
     // Llama a la función de configuración de listeners para el nuevo artículo
     setupSectionListeners(newArticle.querySelector('.sections'));
+
+    // Añadir funcionalidad de edición de título para el nuevo artículo
+    addTitleEditingFunctionality(newArticle.querySelector('.title_edit'));
 }
 
 // Seleccionar todos los artículos existentes y añadir el event listener a los botones de eliminar
